@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form action="/" method="POST">
+        <p>Usuário:</p>
+        <input type="text" name="username">
+        <p>Senha:</p>
+        <input type="text" name="password">
+        <br>
+        <button type="submit">Entrar</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+</body>
+
+</html>
