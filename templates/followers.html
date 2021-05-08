@@ -1,0 +1,9 @@
+<h1>Followers</h1>
+<p>Essas pessoas te seguem:</p>
+
+<ul>
+    {% for follower in followers %}
+    <li>{{follower.name}}</li>
+    {% endfor %}
+</ul>
+<a href="/home">Voltar</a>

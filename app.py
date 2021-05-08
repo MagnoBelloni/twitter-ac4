@@ -1,5 +1,6 @@
-from flask import Flask, render_template, redirect, request, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -29,6 +30,13 @@ class User(db.Model):
     def buscar_por_id(self):
         return self.query.get(self.id)
 
+    def buscar_followers(self):
+        return self.query.join(Follow, Follow.id_follower == User.id).filter(Follow.id_user == self.id)
+
+class Follow(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_user = db.Column(db.Integer)
+    id_follower = db.Column(db.Integer)
 
 db.create_all()
 
@@ -42,7 +50,8 @@ def login():
         login_correto = usuario.login()
 
         if(login_correto):
-            return render_template("home.html")
+            session["user"] = login_correto.id
+            return redirect("/home")
         else:
             flash('Login incorreto!')
             return render_template("login.html")
@@ -55,7 +64,7 @@ def cadastrar_usuario():
             username = request.form["username"]
             password = request.form["password"]
             name = request.form["name"]
-            email =request.form["email"]
+            email = request.form["email"]
             usuario = User(username=username, password=password, name=name, email=email)
             username_em_uso = usuario.buscar_por_username()
             if(username_em_uso):
@@ -66,9 +75,24 @@ def cadastrar_usuario():
         return render_template("cadastrar.html")
     
 
+@app.route("/sair")
+def sair():
+    session["user"] = ""
+    return redirect("/")
+
 @app.route("/home")
 def home():
     return render_template("home.html")
+
+@app.route("/followers")
+def followers():
+    id_user = session['user']
+
+    usuario = User(id=id_user)
+    followers = usuario.buscar_followers()
+
+    return render_template("followers.html", followers=followers)
+
 
 if __name__== "__main__":
     app.run(debug=True)
