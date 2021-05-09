@@ -38,6 +38,13 @@ class Follow(db.Model):
     id_user = db.Column(db.Integer)
     id_follower = db.Column(db.Integer)
 
+    def registrar_follow(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def registrar_unfollow(self):
+        pass
+
 db.create_all()
 
 @app.route("/", methods=['GET', 'POST'])
@@ -86,12 +93,30 @@ def home():
 
 @app.route("/followers")
 def followers():
-    id_user = session['user']
+    id_user = session["user"]
 
     usuario = User(id=id_user)
     followers = usuario.buscar_followers()
 
     return render_template("followers.html", followers=followers)
+
+@app.route("/follow/<int:id_follow>")
+def follow(id_follow):
+    id_user = session["user"]
+    follow = Follow(id_user=id_follow, id_follower=id_user)
+
+    follow.registrar_follow()
+
+    return redirect("/home")
+
+@app.route("/unfollow/<int:id_follower>")
+def unfollow(id_follower):
+    id_user = session["user"]
+    follows = Follow(id_user=id_user, id_follower=id_follower)
+
+    follows.registrar_unfollow()
+
+    return redirect("/home") 
 
 
 if __name__== "__main__":
