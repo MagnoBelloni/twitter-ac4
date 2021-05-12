@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter</title>
+</head>
+
+<body>
+    <h1>Tweets</h1>
+    <br>
+    <a href="/home">Voltar </a>
+    <br>
+    <br>
+
+
+    {% for c in posts %}
+
+            <tr>
+                <td>{{c.content}}
+                <br>
+                <br>
+                </td>    
+            </tr>
+
+            <tr>
+                <td>
+                <a href="/edit/">Editar Tweet  </a>
+                <a href="/delete/{{c.id}}">Excluir Tweet  </a>
+                </td>
+            </tr>
+
+            <br>
+            <br>
+
+    {% endfor %}
+    
+
+</body>
+
+</html>

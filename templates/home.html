@@ -6,10 +6,27 @@
     <title>Twitter</title>
 </head>
 
-<body>
-    <h1>Home, bem vindo ao Twitter</h1>
-    <a href="/followers">Seus Seguidores</a>
-    <a href="/sair">Sair</a>
+    <tr>
+        <td align="right">
+            <a href="/followers">Seus Seguidores</a>
+            <a href="/posts">Suas postagens</a>
+            <a href="/sair">Sair</a>
+        </td>
+    </tr>
+
+    <h1></h1>Bem vindo ao Twitter</h1>
+    <br>
+    <br>
+
+    <br>
+    <label>O que está acontecendo?</label>
+    <form action="/home" method="POST">
+        <textarea id="txtArea" rows="10" cols="70" name="content"></textarea>
+        <br><button type="submit">Tweetar</button>
+    </form>
+    <br>
+    <br>
+
 </body>
 
 </html>

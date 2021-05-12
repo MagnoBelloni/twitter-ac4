@@ -45,6 +45,15 @@ class Follow(db.Model):
     def registrar_unfollow(self):
         pass
 
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    content = db.Column(db.String(80))
+    id_user = db.Column(db.Integer)
+
+    def criar_post(self):
+        db.session.add(self)
+        db.session.commit()
+    
 db.create_all()
 
 @app.route("/", methods=['GET', 'POST'])
@@ -117,6 +126,29 @@ def unfollow(id_follower):
     follows.registrar_unfollow()
 
     return redirect("/home") 
+
+@app.route("/posts")
+def posts():
+    posts = Post.query.all()
+    
+    return render_template("posts.html", posts=posts)
+
+@app.route("/home", methods=['GET', 'POST'])
+def postar():
+    id_user = session["user"]
+    if request.method == 'POST':
+        content = request.form['content']
+        post = Post(content=content, id_user=id_user)
+        post.criar_post()
+
+    return redirect("/posts")
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    post = Post.query.get(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('posts')) 
 
 
 if __name__== "__main__":
