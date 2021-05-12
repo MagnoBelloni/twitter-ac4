@@ -1,6 +1,6 @@
+import re
 from flask import Flask, render_template, redirect, request, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
-from functools import wraps
 
 app = Flask(__name__)
 
@@ -42,8 +42,8 @@ class Follow(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def registrar_unfollow(self):
-        pass
+    def verificar_se_segue(self):
+        return self.query.filter(Follow.id_user == self.id_user, Follow.id_follower == self.id_follower)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -53,7 +53,13 @@ class Post(db.Model):
     def criar_post(self):
         db.session.add(self)
         db.session.commit()
-    
+
+    def buscar_posts(self):
+        return self.query.join(User, User.id == Post.id_user).add_columns(Post.content, Post.id_user, User.name)
+
+    def buscar_meus_posts(self):
+        return self.query.filter(Post.id_user == self.id_user)
+
 db.create_all()
 
 @app.route("/", methods=['GET', 'POST'])
@@ -96,9 +102,19 @@ def sair():
     session["user"] = ""
     return redirect("/")
 
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 def home():
-    return render_template("home.html")
+    id_user = session["user"]
+
+    if request.method == 'POST':
+        content = request.form['content']
+        post = Post(content=content, id_user=id_user)
+        post.criar_post()
+        return redirect("/posts")
+
+    posts = Post(id_user=id_user).buscar_posts()
+    print(posts)
+    return render_template("home.html", posts=posts)
 
 @app.route("/followers")
 def followers():
@@ -109,46 +125,33 @@ def followers():
 
     return render_template("followers.html", followers=followers)
 
-@app.route("/follow/<int:id_follow>")
-def follow(id_follow):
-    id_user = session["user"]
-    follow = Follow(id_user=id_follow, id_follower=id_user)
+@app.route("/follow/<int:id_user>")
+def follow(id_user):
+    id_follower = session["user"]
+
+    follow = Follow(id_user=id_user, id_follower=id_follower)
+    ja_segue = follow.verificar_se_segue().count() > 0
+
+    if(ja_segue):
+        return redirect(url_for('.follow_seguindo', mensagem="Você já segue este usuário"))
 
     follow.registrar_follow()
+    return redirect(url_for('.follow_seguindo', mensagem="Agora você segue este usuário"))
 
-    return redirect("/home")
+@app.route("/follow/seguindo")
+def follow_seguindo():
+    mensagem = request.args['mensagem']
+    return render_template("follow_seguindo.html", mensagem=mensagem)
 
-@app.route("/unfollow/<int:id_follower>")
-def unfollow(id_follower):
-    id_user = session["user"]
-    follows = Follow(id_user=id_user, id_follower=id_follower)
-
-    follows.registrar_unfollow()
-
-    return redirect("/home") 
 
 @app.route("/posts")
 def posts():
-    posts = Post.query.all()
-    
-    return render_template("posts.html", posts=posts)
-
-@app.route("/home", methods=['GET', 'POST'])
-def postar():
     id_user = session["user"]
-    if request.method == 'POST':
-        content = request.form['content']
-        post = Post(content=content, id_user=id_user)
-        post.criar_post()
+    posts = Post(id_user=id_user)
 
-    return redirect("/posts")
+    meus_posts = posts.buscar_meus_posts()
 
-@app.route("/delete/<int:id>")
-def delete(id):
-    post = Post.query.get(id)
-    db.session.delete(post)
-    db.session.commit()
-    return redirect(url_for('posts')) 
+    return render_template("posts.html", posts=meus_posts)
 
 
 if __name__== "__main__":

@@ -6,26 +6,36 @@
     <title>Twitter</title>
 </head>
 
-    <tr>
-        <td align="right">
-            <a href="/followers">Seus Seguidores</a>
-            <a href="/posts">Suas postagens</a>
-            <a href="/sair">Sair</a>
-        </td>
-    </tr>
+<tr>
+    <td align="right">
+        <a href="/followers">Seus Seguidores</a>
+        <a href="/posts">Suas postagens</a>
+        <a href="/sair">Sair</a>
+    </td>
+</tr>
 
-    <h1></h1>Bem vindo ao Twitter</h1>
-    <br>
-    <br>
+<h1>Bem vindo ao Twitter</h1>
+<br>
+<br>
 
-    <br>
-    <label>O que está acontecendo?</label>
-    <form action="/home" method="POST">
-        <textarea id="txtArea" rows="10" cols="70" name="content"></textarea>
-        <br><button type="submit">Tweetar</button>
-    </form>
-    <br>
-    <br>
+<br>
+<label>O que está acontecendo?</label>
+<form action="/home" method="POST">
+    <textarea id="txtArea" rows="10" cols="70" name="content"></textarea>
+    <br><button type="submit">Tweetar</button>
+</form>
+<br>
+<br>
+
+{% for c in posts %}
+
+<div>
+    <h4>{{c.name}} - <a href="/follow/{{c.id_user}}">Seguir o usuario</a></h4>
+    <p>{{c.content}}</p>
+</div>
+<br>
+
+{% endfor %}
 
 </body>
 
