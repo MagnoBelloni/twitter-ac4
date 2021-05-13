@@ -4,19 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Twitter</title>
+    <link rel="stylesheet" href="../static/bootstrap.min.css">
 </head>
 
-<body>
-    <h1>Login</h1>
-    <form action="/" method="POST">
-        <p>Usuário:</p>
-        <input type="text" name="username">
-        <p>Senha:</p>
-        <input type="password" name="password">
-        <br>
-        <button type="submit">Entrar</button>
-    </form>
 
+<body>
+<div class="container">
+    <h1 class="text-center" >Login</h1>
+    <form action="/" method="POST">
+        <div class="col text-center">
+        <input class="form-control" placeholder="usuario" name="username">
+        <div>
+        <br>
+        <div class="col text-center">
+        <input class="form-control " placeholder="senha" type="password" name="password">
+        <div>
+        <br>
+        <div class="col text-center">
+        <button class="btn btn-primary" type="button, submit">Entrar</button>
+        </div>
+    </form>
+    <br>
     <p>Não tem uma conta? <a href="/cadastrar">Clique aqui</a>, para se cadastrar</p>
 
     {% with messages = get_flashed_messages() %}
@@ -29,6 +37,8 @@
     {% endif %}
     {% endwith %}
 
+<div>
 </body>
+
 
 </html>

@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Twitter</title>
+    <link rel="stylesheet" href="../static/bootstrap.min.css">
 </head>
-
+<div class="container">
+<body>
 <tr>
     <td align="right">
         <a href="/followers">Seus Seguidores</a>
@@ -19,10 +21,10 @@
 <br>
 
 <br>
-<label>O que está acontecendo?</label>
+
 <form action="/home" method="POST">
-    <textarea id="txtArea" rows="10" cols="70" name="content"></textarea>
-    <br><button type="submit">Tweetar</button>
+    <textarea id="txtArea" placeholder="O que está acontecendo?" rows="10" cols="70" name="content"></textarea>
+    <br><button class="btn btn-primary" type="submit, button">Tweetar</button>
 </form>
 <br>
 <br>
@@ -38,5 +40,5 @@
 {% endfor %}
 
 </body>
-
+</div>
 </html>
