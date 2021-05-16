@@ -8,25 +8,27 @@
 </head>
 
 <body>
+    <div class="container">
     <h1>Tweets</h1>
-    <br>
-    <a href="/home">Voltar </a>
-    <br>
-    <br>
+        <br>
+        <a href="/home" class="btn btn-primary">Voltar </a>
+        <br>
+        <br>
 
 
-    {% for c in posts %}
+        {% for c in posts %}
 
-    <tr>
-        <td>{{c.content}}
-            <br>
-            <br>
-        </td>
-    </tr>
-    <br>
-    <br>
+        <tr>
+            <td>{{c.content}}
+                <br>
+                <br>
+            </td>
+        </tr>
+        <br>
+        <br>
 
-    {% endfor %}
+        {% endfor %}
+    </div>
 
 
 </body>

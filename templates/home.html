@@ -6,39 +6,51 @@
     <title>Twitter</title>
     <link rel="stylesheet" href="../static/bootstrap.min.css">
 </head>
-<div class="container">
 <body>
-<tr>
-    <td align="right">
-        <a href="/followers">Seus Seguidores</a>
-        <a href="/posts">Suas postagens</a>
-        <a href="/sair">Sair</a>
-    </td>
-</tr>
-
-<h1>Bem vindo ao Twitter</h1>
-<br>
-<br>
-
-<br>
-
-<form action="/home" method="POST">
-    <textarea id="txtArea" placeholder="O que está acontecendo?" rows="10" cols="70" name="content"></textarea>
-    <br><button class="btn btn-primary" type="submit, button">Tweetar</button>
-</form>
-<br>
-<br>
-
-{% for c in posts %}
-
-<div>
-    <h4>{{c.name}} - <a href="/follow/{{c.id_user}}">Seguir o usuario</a></h4>
-    <p>{{c.content}}</p>
+<div class="container">
+    <nav class="nav-bar nav-bar-expand navbar-danger bg-dark ">
+        <ul class="nav">
+            <li class="nav-item">
+                <a href="/followers" class="nav-link">Meus Seguidores</a>
+            </li>
+            <li>
+                <a href="/posts"class="nav-link">Minhas postagens</a>
+            <li>
+                <a href="/sair" class="nav-link">Sair</a>
+            </li>
+        </ul>
+    </nav>
 </div>
-<br>
 
-{% endfor %}
+<div class="container">
+    <div class="col text-center">
+    <h1>Bem vindo ao Twitter</h1>
+    <br>
+    <br>
 
+    <br>
+    </div>
+    <div class="col text-center">
+    <form action="/home" method="POST">
+        <textarea id="txtArea" placeholder="O que está acontecendo?" rows="10" cols="70" name="content"></textarea>
+        <br><button class="btn btn-primary" type="submit, button">Tweetar</button>
+    </form>
+    </div>
+    <br>
+    <br>
+    <div class="col text-center">>
+    {% for c in posts %}
+
+    <div>
+        <h4>{{c.name}} - <a href="/follow/{{c.id_user}}">Seguir o usuario</a></h4>
+        <p>{{c.content}}</p>
+    </div>
+    <br>
+
+    {% endfor %}
+    <script type="text/javascript" src="../static/bootstrap.js"></script>
+    </div>
+</div>
 </body>
-</div>
+
 </html>
